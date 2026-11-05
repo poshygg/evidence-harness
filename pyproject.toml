@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hackathon-evidence-harness"
+version = "0.1.0"
+description = "Local MCP tools for requirements, decisions and reproducible checks"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["mcp==1.26.0"]
+
+[project.scripts]
+evidence-harness = "evidence_harness.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

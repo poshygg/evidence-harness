@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "task_id": "synthetic-contract-baseline",
+  "kind": "correctness",
+  "argv": ["python", "checks/test_contract.py", "--variant", "baseline"],
+  "cwd": ".",
+  "env_allowlist": [],
+  "timeout_seconds": 30,
+  "tracked_source_paths": ["application/baseline.py"],
+  "fixture_paths": ["checks/fixtures/synthetic.json"],
+  "check_paths": ["checks/test_contract.py"],
+  "lockfile_paths": ["uv.lock"],
+  "variant_id": "baseline",
+  "seed": 42,
+  "warmups": 0,
+  "repeats": 1,
+  "oracle_description": "빈 배열과 [2,1,2] 같은 고정 입력을 수동 정답과 비교하는 설계 예시다. 실제 검사는 미구현이다.",
+  "result_artifact": "evidence-private/task-output/contract.json",
+  "metric_definitions": [],
+  "test_authored_by": "codex",
+  "limitations": ["구조 설명용이다. 참조하는 소스·fixture·검사·lockfile은 이 패키지에 없고 실행하지 않았다.", "형식 검사는 파일 존재·정답·보안 격리를 검증하지 않는다."]
+}

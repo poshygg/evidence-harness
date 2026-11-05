@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "synthetic_only": true,
+  "calls": [
+    {
+      "tool": "record_requirement",
+      "arguments": {
+        "request_id": "synthetic-requirement-1",
+        "title": "정수 목록의 중복을 제거하고 최초 등장 순서를 보존한다",
+        "source_ref": null,
+        "source_excerpt": null,
+        "interpretation": "합성 예시의 가정이다. 실제 과제 요구사항이 아니다.",
+        "interpretation_status": "uncertain",
+        "priority": "must",
+        "acceptance_criteria": ["빈 입력은 빈 배열", "[2,1,2]의 결과는 [2,1]", "모든 출력은 입력에 존재하고 중복이 없다"],
+        "check_ids": [],
+        "reported_by": "codex"
+      }
+    },
+    {
+      "tool": "record_decision",
+      "arguments": {
+        "request_id": "synthetic-decision-1",
+        "question": "첫 기준 구현을 어떤 방식으로 만들 것인가?",
+        "alternatives": [
+          {"name": "순차 탐색", "expected_benefit": "동작을 쉽게 확인할 수 있다", "cost": "입력이 커지면 비교가 늘어날 수 있다", "rejection_reason": null},
+          {"name": "해시 집합 보조", "expected_benefit": "중복 조회 비용을 줄일 후보", "cost": "추가 메모리와 구현 검사가 필요하다", "rejection_reason": "기준 구현 이후 같은 조건으로 비교할 예정"}
+        ],
+        "selected": "순차 탐색",
+        "reason": "작은 기준 구현부터 작성한다는 설계 예시다. 실행 결과는 없다.",
+        "tradeoffs": ["속도보다 확인 가능한 작은 baseline을 우선한다"],
+        "evidence_ids": [],
+        "unverified_assumptions": ["실제 입력 규모", "실측 시간과 메모리"],
+        "reported_by": "codex"
+      }
+    },
+    {
+      "tool": "record_ai_assessment",
+      "arguments": {
+        "request_id": "synthetic-ai-1",
+        "claim": "해시 집합을 보조로 쓰면 이 입력에서 더 빠를 수 있다",
+        "conversation_ref": null,
+        "paraphrase": true,
+        "action": "deferred",
+        "reason": "설명 예시이며 실제 제안이나 실험 기록이 아니다. 동일 입력의 정확성·반복 측정 이후 판단한다.",
+        "evidence_ids": [],
+        "reported_by": "codex",
+        "remaining_uncertainties": ["입력 분포", "작은 입력에서의 상수 비용", "메모리 비용"]
+      }
+    }
+  ]
+}

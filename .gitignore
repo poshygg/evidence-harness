@@ -1,0 +1,20 @@
+# Public code/design repository only. Store actual task data outside this tree.
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+evidence-private/
+runtime/
+runs/
+private/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.log
+.evidence-harness/
+*.egg-info/
+build/
+dist/
+.coverage

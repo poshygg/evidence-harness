@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "evidence_harness": {
+      "command": "/workspace/tools/evidence-harness/.venv/bin/python",
+      "args": ["-m", "evidence_harness", "serve", "--workspace", "/workspace/.evidence-harness/workspace.json"]
+    }
+  }
+}

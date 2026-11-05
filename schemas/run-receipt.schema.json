@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Actual v0.1 run record envelope; structure does not establish truth",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "workspace_id",
+    "record_id",
+    "kind",
+    "created_at",
+    "status",
+    "data",
+    "limitations",
+    "reused"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "workspace_id": {
+      "type": "string"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^run_"
+    },
+    "kind": {
+      "const": "run"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "const": "recorded"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "synthetic",
+        "check_id",
+        "variant_id",
+        "execution_status",
+        "correctness_status",
+        "freshness",
+        "manifest",
+        "error",
+        "limitations",
+        "observations"
+      ],
+      "properties": {
+        "synthetic": {
+          "const": false
+        },
+        "check_id": {
+          "type": "string"
+        },
+        "variant_id": {
+          "type": "string"
+        },
+        "execution_status": {
+          "enum": [
+            "completed",
+            "failed",
+            "timeout",
+            "resource_limited"
+          ]
+        },
+        "correctness_status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_checked"
+          ]
+        },
+        "freshness": {
+          "enum": [
+            "current",
+            "stale",
+            "contaminated",
+            "unknown"
+          ]
+        },
+        "manifest": {
+          "type": "object"
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observations": {
+          "type": "object",
+          "required": [
+            "argv",
+            "cwd",
+            "manifest_sha256",
+            "fingerprints_before",
+            "fingerprints_after",
+            "environment_sha256",
+            "snapshot_dir",
+            "exit_code",
+            "duration_ms",
+            "seed",
+            "warmups",
+            "repeats",
+            "completed_measured_iterations",
+            "metrics",
+            "iterations",
+            "raw_artifacts",
+            "logs"
+          ],
+          "properties": {
+            "argv": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cwd": {
+              "type": "string"
+            },
+            "manifest_sha256": {
+              "type": "string"
+            },
+            "fingerprints_before": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "fingerprints_after": {
+              "type": [
+                "object",
+                "null"
+              ]
+            },
+            "environment_sha256": {
+              "type": "string"
+            },
+            "snapshot_dir": {
+              "type": "string"
+            },
+            "exit_code": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "duration_ms": {
+              "type": "number",
+              "minimum": 0
+            },
+            "seed": {
+              "type": "integer"
+            },
+            "warmups": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "repeats": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "completed_measured_iterations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "metrics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "unit",
+                  "direction",
+                  "measurement_scope",
+                  "measurement_source",
+                  "state",
+                  "samples"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "direction": {
+                    "enum": [
+                      "lower",
+                      "higher"
+                    ]
+                  },
+                  "measurement_scope": {
+                    "type": "string"
+                  },
+                  "measurement_source": {
+                    "enum": [
+                      "runner",
+                      "check_reported"
+                    ]
+                  },
+                  "state": {
+                    "enum": [
+                      "measured",
+                      "not_measured"
+                    ]
+                  },
+                  "samples": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "iterations": {
+              "type": "array"
+            },
+            "raw_artifacts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "logs": {
+              "type": "object",
+              "required": [
+                "directory",
+                "limit_bytes",
+                "captured_bytes",
+                "truncated"
+              ],
+              "properties": {
+                "directory": {
+                  "type": "string"
+                },
+                "limit_bytes": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "captured_bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "truncated": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reused": {
+      "type": "boolean"
+    }
+  }
+}

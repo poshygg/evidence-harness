@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Illustrative inputs for the three recording tools",
+  "type": "object",
+  "required": ["schema_version", "synthetic_only", "calls"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "synthetic_only": {"type": "boolean"},
+    "calls": {"type": "array", "items": {"oneOf": [
+      {"$ref": "#/$defs/requirement_call"},
+      {"$ref": "#/$defs/decision_call"},
+      {"$ref": "#/$defs/ai_call"}
+    ]}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "texts": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+    "reporter": {"enum": ["candidate", "codex"]},
+    "requirement_call": {
+      "type": "object", "required": ["tool", "arguments"], "additionalProperties": false,
+      "properties": {
+        "tool": {"const": "record_requirement"},
+        "arguments": {
+          "type": "object", "additionalProperties": false,
+          "required": ["request_id", "title", "source_ref", "source_excerpt", "interpretation", "interpretation_status", "priority", "acceptance_criteria", "check_ids", "reported_by"],
+          "properties": {
+            "request_id": {"$ref": "#/$defs/text"},
+            "title": {"$ref": "#/$defs/text"},
+            "source_ref": {"type": ["string", "null"]},
+            "source_excerpt": {"type": ["string", "null"]},
+            "interpretation": {"$ref": "#/$defs/text"},
+            "interpretation_status": {"enum": ["confirmed", "uncertain"]},
+            "priority": {"enum": ["must", "should", "optional"]},
+            "acceptance_criteria": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}},
+            "check_ids": {"$ref": "#/$defs/texts"},
+            "reported_by": {"$ref": "#/$defs/reporter"},
+            "supersedes_id": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "decision_call": {
+      "type": "object", "required": ["tool", "arguments"], "additionalProperties": false,
+      "properties": {
+        "tool": {"const": "record_decision"},
+        "arguments": {
+          "type": "object", "additionalProperties": false,
+          "required": ["request_id", "question", "alternatives", "selected", "reason", "tradeoffs", "evidence_ids", "unverified_assumptions", "reported_by"],
+          "properties": {
+            "request_id": {"$ref": "#/$defs/text"},
+            "question": {"$ref": "#/$defs/text"},
+            "alternatives": {"type": "array", "minItems": 2, "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["name", "expected_benefit", "cost", "rejection_reason"],
+              "properties": {
+                "name": {"$ref": "#/$defs/text"},
+                "expected_benefit": {"$ref": "#/$defs/text"},
+                "cost": {"$ref": "#/$defs/text"},
+                "rejection_reason": {"type": ["string", "null"]}
+              }
+            }},
+            "selected": {"$ref": "#/$defs/text"},
+            "reason": {"$ref": "#/$defs/text"},
+            "tradeoffs": {"$ref": "#/$defs/texts"},
+            "evidence_ids": {"$ref": "#/$defs/texts"},
+            "unverified_assumptions": {"$ref": "#/$defs/texts"},
+            "reported_by": {"$ref": "#/$defs/reporter"},
+            "supersedes_id": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "ai_call": {
+      "type": "object", "required": ["tool", "arguments"], "additionalProperties": false,
+      "properties": {
+        "tool": {"const": "record_ai_assessment"},
+        "arguments": {
+          "type": "object", "additionalProperties": false,
+          "required": ["request_id", "claim", "conversation_ref", "paraphrase", "action", "reason", "evidence_ids", "reported_by", "remaining_uncertainties"],
+          "properties": {
+            "request_id": {"$ref": "#/$defs/text"},
+            "claim": {"$ref": "#/$defs/text"},
+            "conversation_ref": {"type": ["string", "null"]},
+            "paraphrase": {"type": "boolean"},
+            "action": {"enum": ["adopted", "modified", "rejected", "deferred"]},
+            "reason": {"$ref": "#/$defs/text"},
+            "evidence_ids": {"$ref": "#/$defs/texts"},
+            "reported_by": {"$ref": "#/$defs/reporter"},
+            "remaining_uncertainties": {"$ref": "#/$defs/texts"},
+            "supersedes_id": {"type": ["string", "null"]}
+          },
+          "allOf": [{"if": {"properties": {"conversation_ref": {"type": "null"}}}, "then": {"properties": {"paraphrase": {"const": true}}}}]
+        }
+      }
+    }
+  }
+}
